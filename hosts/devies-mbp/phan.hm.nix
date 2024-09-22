@@ -4,7 +4,7 @@
   # manage.
   home.username = "phan";
   home.homeDirectory = "/Users/phan";
-    #  launchd.enable = true;
+  #  launchd.enable = true;
   launchd.agents.FirefoxEnv = {
     enable = true;
     config.ProgramArguments = [
@@ -56,8 +56,9 @@
   #  /etc/profiles/per-user/henningphan/etc/profile.d/hm-session-vars.sh
   #
   # if you don't want to manage your shell through Home Manager.
-  home.sessionVariables = {
-  };
+  home.sessionVariables =
+    {
+    };
 
   programs.firefox = {
     enable = true;

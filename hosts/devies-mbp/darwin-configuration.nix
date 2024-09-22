@@ -4,7 +4,6 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    _1password-gui
     element-desktop
     karabiner-elements
     jq
@@ -14,7 +13,7 @@
     iterm2
     slack
   ];
-  imports = [ ../../mac/copy-to-spotlight.nix ];
+  #imports = [ ../../mac/copy-to-spotlight.nix ];
 
   programs.bash = {
     enable = true;
