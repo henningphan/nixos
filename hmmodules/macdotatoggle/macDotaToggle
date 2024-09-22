@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# https://hidutil-generator.netlify.app/
+#
+# e2 left alt
+# e3 left gui
+# e7 right gui
+# e6 right alt
+
+activate_mac_mode (){
+    echo "Activate mac mode"
+    hidutil property --set '{"UserKeyMapping":
+        [{"HIDKeyboardModifierMappingSrc":0x7000000e7,
+          "HIDKeyboardModifierMappingDst":0x7000000e6},
+         {"HIDKeyboardModifierMappingSrc":0x7000000e6,
+          "HIDKeyboardModifierMappingDst":0x7000000e7}]
+    }' > /dev/null
+
+}
+
+activate_dota_mode (){
+    echo "Activate dota mode"
+    hidutil property --set '{"UserKeyMapping":
+        [{"HIDKeyboardModifierMappingSrc":0x7000000e7,
+          "HIDKeyboardModifierMappingDst":0x7000000e6},
+         {"HIDKeyboardModifierMappingSrc":0x7000000e6,
+          "HIDKeyboardModifierMappingDst":0x7000000e7},
+         {"HIDKeyboardModifierMappingSrc":0x7000000e2,
+          "HIDKeyboardModifierMappingDst":0x7000000e3},
+         {"HIDKeyboardModifierMappingSrc":0x7000000e3,
+          "HIDKeyboardModifierMappingDst":0x7000000e2}]
+    }' > /dev/null
+}
+
+nr_of_rules=$(hidutil property \
+    --get UserKeyMapping \
+    | grep -ic hidkeyboardmodifiermappingsrc)
+
+case $nr_of_rules in
+  2)
+  activate_dota_mode
+  ;;
+  4)
+  activate_mac_mode
+  ;;
+  *)
+  activate_mac_mode
+esac

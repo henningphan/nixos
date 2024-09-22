@@ -1,0 +1,169 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+main(){
+    is_interactive_or_return || return
+    set_shell_options
+    friendly_less
+    color_prompt yes
+    #force_color
+    basic_exports
+    export_ls_colors
+    set_bindings
+    source_bashd
+    set_alias
+    ssh_agent
+
+
+}
+is_interactive_or_return(){
+
+    # If not running interactively, don't do anything
+    case $- in
+        *i*) ;;
+        *) return 1;;
+    esac
+}
+
+set_shell_options(){
+    # don't put duplicate lines or lines starting with space in the history.
+    # See bash(1) for more options
+    HISTCONTROL=ignoreboth:erasedups
+
+    # append to the history file, don't overwrite it
+    shopt -s histappend
+
+    # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+    HISTSIZE=1000
+    HISTFILESIZE=2000
+
+    # check the window size after each command and, if necessary,
+    # update the values of LINES and COLUMNS.
+    shopt -s checkwinsize
+
+    # If set, the pattern "**" used in a pathname expansion context will
+    # match all files and zero or more directories and subdirectories.
+    shopt -s globstar
+    set -o vi
+}
+
+friendly_less(){
+    # make less more friendly for non-text input files, see lesspipe(1)
+    [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+}
+
+
+force_color(){
+    # uncomment for a colored prompt, if the terminal has the capability; turned
+    # off by default to not distract the user: the focus in a terminal window
+    # should be on the output of commands, not on the prompt
+    #force_color_prompt=yes
+
+    if [ -n "$force_color_prompt" ]; then
+        if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+            # We have color support; assume it's compliant with Ecma-48
+            # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+            # a case would tend to support setf rather than setaf.)
+            color_prompt=yes
+        else
+            color_prompt=
+        fi
+    fi
+}
+
+color_prompt(){
+    if [ "$1" = yes ]; then
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    else
+        PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    fi
+}
+
+basic_exports(){
+    export EDITOR=vim
+}
+
+export_ls_colors(){
+    # enable color support of ls
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    fi
+}
+
+set_bindings(){
+    bind -x '"\C-l": clear'
+}
+
+source_bashd(){
+    for x in ~/.bash.d/*.bash; do
+        source "$x"
+    done
+}
+
+set_alias(){
+    alias l='ls -lAh --color=auto'
+    alias bashrc='vim ~/.bashrc'
+    alias bashlocal='vim ~/.bash.d/local.bash'
+    alias gl="git log --name-status"
+    alias gs="git status"
+    alias gd="git diff"
+    alias gau="git add -u"
+    alias gpr="git pull -r"
+    alias amend="git commit --amend"
+    alias amende="git commit --amend --no-edit"
+
+    alias ..="cd .."
+    alias ...="cd ../.."
+    alias ....="cd ../../.."
+    alias .....="cd ../../../.."
+}
+
+
+ssh_agent(){
+    if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+        eval `ssh-agent`
+        ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+    fi
+    export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+    # ssh-adds reads ~/.ssh/config for identity files to add
+    ssh-add -l > /dev/null || ssh-add
+
+}
+
+venv(){
+    old="$PWD"
+    while true; do
+        if [[ -d .venv ]]; then
+            source .venv/bin/activate
+            echo "Found $PWD/.venv"
+            cd "$old" && return
+        else
+            cd ..
+        fi
+        [[ $PWD == "/" ]] && { cd "$old" || return 1 ;} && break
+    done
+    return 1
+}
+
+vvenv(){
+    if ! venv; then
+        python -m venv .venv
+        venv
+    fi
+
+}
+
+repo(){
+    cd "$HOME/repo/$1"
+}
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    source /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    source /etc/bash_completion
+  fi
+fi
+main

@@ -1,0 +1,13 @@
+# Copy mode related things here
+
+bind-key    -T prefix       ä                    copy-mode
+bind-key    -T prefix       ö                    paste-buffer
+bind-key -T copy-mode-vi 'C-h' select-pane -L
+bind-key -T copy-mode-vi 'C-j' select-pane -D
+bind-key -T copy-mode-vi 'C-k' select-pane -U
+bind-key -T copy-mode-vi 'C-l' select-pane -R
+bind-key -T copy-mode-vi 'C-\' select-pane -l
+
+bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -in -se primary -f | xclip -se secondary -f | xclip -in -se clipboard"
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -se primary -f | xclip -se secondary -f | xclip -in -se clipboard"
