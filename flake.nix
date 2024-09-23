@@ -35,6 +35,7 @@
     {
       formatter.x86_64-linux = pkgs_x86_64-linux.nixfmt-rfc-style;
       formatter.aarch64-darwin = pkgs_aarch64-darwin.nixfmt-rfc-style;
+
       darwinConfigurations.devies-mbp = darwinSystem {
         system = "aarch64-darwin";
         specialArgs = {
@@ -43,7 +44,12 @@
         modules = [
           ./hosts/devies-mbp/darwin-configuration.nix
         ];
-
+      };
+      nixosConfigurations."nixos-shuttle" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/nixos-shuttle/configuration.nix
+        ];
       };
 
       homeConfigurations."henning@devies-mbp" = home-manager.lib.homeManagerConfiguration {
