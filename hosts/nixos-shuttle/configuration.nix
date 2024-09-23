@@ -16,7 +16,7 @@
     ./hardware-configuration.nix
     ../../nixosmodules/nvim.nix
     ../../nixosmodules/tmux.nix
-    ../../nixosmodules/servarr.nix
+    ../../nixosmodules/servarr
   ];
 
   virtualisation.docker.enable = true;
