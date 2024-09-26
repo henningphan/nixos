@@ -1,8 +1,8 @@
-{ username }:
+{ cdsid, email}:
 { config, pkgs, ... }:
 {
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
+  home.username = "${cdsid}";
+  home.homeDirectory = "/home/${cdsid}";
 
   home.stateVersion = "23.05"; # Please read the comment before changing.
   #  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [ "slack" "teams" "vimPlugins.copilot-vim" ];
@@ -43,7 +43,7 @@
     enable = true;
     delta.enable = true;
     delta.options.side-by-side = true;
-    userEmail = "${username}@volvocars.com";
+    userEmail = "${email}";
     userName = "Henning phan";
     extraConfig.gitreview.remote = "origin";
   };
