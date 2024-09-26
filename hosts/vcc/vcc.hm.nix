@@ -20,6 +20,7 @@
     git-review
     libreoffice
     nh
+    nix
     nix-direnv
     python311Packages.grip
     remmina
