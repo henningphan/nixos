@@ -12,6 +12,8 @@
     nur.url = "github:nix-community/NUR";
     nix-darwin.url = "github:lnl7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -20,6 +22,7 @@
       home-manager,
       nixpkgs-firefox-darwin,
       nur,
+      sops-nix,
       nix-darwin,
       ...
     }:
@@ -43,12 +46,14 @@
         };
         modules = [
           ./hosts/devies-mbp/darwin-configuration.nix
+          sops-nix.nixosModules.sops
         ];
       };
       nixosConfigurations."nixos-shuttle" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/nixos-shuttle/configuration.nix
+          sops-nix.nixosModules.sops
         ];
       };
         hmCreator = {cdsid, email}@hmArgs: home-manager.lib.homeManagerConfiguration {

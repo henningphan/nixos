@@ -14,20 +14,21 @@
 # example 192.168.1.20:32400/web
 {config, pkgs, ...}:
 let
+  deluge_web_port = 8112;
   plex_web_port = 32400;
   prowlarr_web_port = 9696;
   radarr_web_port = 7878;
   sonarr_web_port = 8989;
-  transmission_web_port = 9091;
   torrent_port = 30527;
+  servarr_group_gid = 10001;
   lib = pkgs.lib;
   servarr_users = {
-      plex = { uid = lib.mkForce 2000; isNormalUser = true;};
+      plex = { uid = lib.mkForce 2000; isSystemUser = true; group="servarr";};
       # prowlarr uses systemd dynamicUser instead
       # which gives it a random user id
-      radarr = { uid = lib.mkForce 2002; isNormalUser = true;};
-      sonarr = { uid = lib.mkForce 2003; isNormalUser = true;};
-      transmission = { uid = lib.mkForce 2004; isNormalUser = true;};
+      radarr = { uid = lib.mkForce 2002; isSystemUser = true;group="servarr";};
+      sonarr = { uid = lib.mkForce 2003; isSystemUser = true;group="servarr";};
+      deluged = { uid = lib.mkForce 2005; isSystemUser = true;group="servarr";};
   };
 in
 {
@@ -36,13 +37,18 @@ in
       # setup persistent data files that servarr requires
       # see for definition: https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
       "d /opt/servarr 770 root servarr - -"
-      "d /opt/servarr/transmission 770 transmission servarr - -"
-      "d /opt/servarr/transmission/.config 770 transmission servarr - -"
-      "d /opt/servarr/transmission/.config/transmission-daemon 770 transmission servarr - -"
       "d /opt/servarr/tv-shows 770 plex servarr - -"
     ];
+  # Need to figure out how to provide non-default sops file
+  # to isolate this module
+  sops.defaultSopsFile = ../../secrets/servarr.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  sops.secrets."deluge/authFile" = {
+      restartUnits = [ "container@servarr.service" ];
+      owner = config.users.users.deluged.name;
+  };
 
-  users.groups."servarr".gid = 10001;
+  users.groups."servarr".gid = servarr_group_gid;
   users.users = servarr_users;
   containers.servarr = {
       autoStart = true;
@@ -67,12 +73,19 @@ in
               hostPath = "/dev/dri";
               isReadOnly = false;
           };
+          # TODO Maybe its possible to put the secret directly into the container
+          # instead of bind mounting it
+          "/run/secrets/deluge/authFile" = {
+              hostPath = "/run/secrets/deluge/authFile" ;
+              isReadOnly = true;
+          };
       };
       privateNetwork = true;
       macvlans = [ "enp1s0" ];
 
       config = { config, pkgs, ...}:
       {
+
           fileSystems."/var/lib/private/prowlarr" = {
               device = "/opt/servarr/prowlarr";
               options = [ "bind" ];
@@ -88,14 +101,35 @@ in
               ];
           };
           users.users = servarr_users;
-          # https://github.com/NixOS/nixpkgs/issues/258793
-          systemd.services.transmission = {
-              serviceConfig = {
-              RootDirectoryStartOnly = pkgs.lib.mkForce false;
-              RootDirectory = pkgs.lib.mkForce "";
-              };
-          };
           services = {
+              deluge = {
+                  authFile = "/run/secrets/deluge/authFile";
+                  # To see available config options
+                  # https://git.deluge-torrent.org/deluge/tree/deluge/core/preferencesmanager.py#n37
+                  config = {
+                      download_location = "/opt/servarr/deluge/incomplete";
+                      move_completed = true;
+                      move_completed_path = "/opt/servarr/deluge/downloads";
+                  };
+                  dataDir = "/opt/servarr/deluge";
+                  declarative = true;
+                  enable = true;
+                  group = "servarr";
+                  user = "deluged";
+                  openFirewall = true;
+                  web = {
+                      enable = true;
+                      openFirewall = true;
+                      port = deluge_web_port;
+                  };
+              };
+              radarr = {
+                  enable = true;
+                  openFirewall = true;
+                  dataDir = "/opt/servarr/radarr";
+                  group = "servarr";
+                  user = "radarr";
+              };
               plex = {
                   enable = true;
                   dataDir = "/opt/servarr/plex";
@@ -114,36 +148,6 @@ in
                   group = "servarr";
                   user = "sonarr";
               };
-              radarr = {
-                  enable = true;
-                  openFirewall = true;
-                  dataDir = "/opt/servarr/radarr";
-                  group = "servarr";
-                  user = "radarr";
-              };
-              transmission = {
-                  enable = true;
-                  group = "servarr";
-                  user = "transmission";
-                  home = "/opt/servarr/transmission";
-                  downloadDirPermissions = "770";
-                  # https://github.com/NixOS/nixpkgs/issues/279049#issuecomment-1879501707
-                  # when the patch get merged we can remove webHome
-                  webHome = pkgs.flood-for-transmission;
-                  extraFlags = [
-                  "--logfile" "/opt/servarr/transmission/debug.log"
-              ];
-                  settings = {
-                      peer-port = torrent_port;
-                      rpc-bind-address = "0.0.0.0";
-                      rpc-whitelist = "192.168.1.*,127.0.0.1";
-                      rpc-host-whitelist = "*";
-                      dht-enabled = false;
-                      pex-enabled = false;
-
-                  };
-                  openRPCPort = true;
-              };
           };
           nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
               "plexmediaserver"
@@ -153,7 +157,7 @@ in
               silver-searcher
           ];
 
-          users.groups."servarr".gid = 10001;
+          users.groups."servarr".gid = servarr_group_gid;
           system.stateVersion = "23.11"; # Did you read the comment?
       };
   };
