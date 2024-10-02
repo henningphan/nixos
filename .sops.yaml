@@ -1,0 +1,9 @@
+keys:
+  - &admin_henning age16fksmjxm9ylncs4x2nl8wlrkea8h0k4f7h4a2k95h23auxr2huhq2xss2q
+  - &nixos-shuttle age135l0qpxcjvagdrujdzav3awlfyamwtv6xync00rw2a545224sacqte59v4
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_henning
+      - *nixos-shuttle
