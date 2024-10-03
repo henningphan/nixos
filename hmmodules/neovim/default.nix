@@ -27,27 +27,6 @@ in
       defaultEditor = true;
       enable = true;
       vimAlias = true;
-      extraConfig = ''
-        set nocompatible
-        set tabstop=4
-        set path+=**
-        set shiftwidth=4
-        set expandtab
-        set smartindent
-        set number
-        set cursorcolumn
-        syntax enable
-        highlight CursorColumn ctermbg=Black
-        set cursorline
-
-        nnoremap eu :w<CR>
-        nnoremap eo :q<CR>
-        set background=dark
-        colorscheme solarized8_flat
-        :highlight ExtraWhitespace ctermbg=red guibg=red
-        match ExtraWhitespace /\s\+$/
-      '';
-
       extraLuaConfig =
         let
           luaFiles =
@@ -87,6 +66,7 @@ in
           fzf-vim
           nvim-lspconfig
           nvim-treesitter.withAllGrammars
+          markdown-preview-nvim
           surround
           vim-solarized8
         ]
