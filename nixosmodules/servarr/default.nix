@@ -1,8 +1,10 @@
-# This module provides the servarr, https://wiki.servarr.com/, and plex stack
+# This module provides the servarr, https://wiki.servarr.com/, with plex media server,
 # A set of applications that automatically grabs tv-shows, movies etc
 #
 # All applications are run in a systemd-nspawn container
-# Where the network is isolated but we forward the application ports from our host system
+# Where the network is isolated and the container uses macvlan to get its own mac address
+# to present to the router and therefore looks like its own host to the router.
+# Because of current network settings the host cannot contact the container on the network
 #
 # All application config and media movies are exposed at /opt/servarr
 #
@@ -10,8 +12,8 @@
 # except prowlarr that uses systemd dynamic user.
 # https://0pointer.net/blog/dynamic-users-with-systemd.html
 #
-# Plex, first time visiting the website you have to have the path /web
-# example 192.168.1.20:32400/web
+# Plex, first time visiting the website you have to append the path /web
+# example 192.168.1.12:32400/web
 {config, pkgs, ...}:
 let
   deluge_web_port = 8112;
