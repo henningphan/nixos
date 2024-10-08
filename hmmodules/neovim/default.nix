@@ -68,6 +68,7 @@ in
           nvim-treesitter.withAllGrammars
           markdown-preview-nvim
           surround
+          trouble-nvim
           vim-solarized8
         ]
         ++ cfg.extraPlugins;
