@@ -1,4 +1,11 @@
 local nvim_lsp = require('lspconfig')
+
+local format_on_close = function()
+  vim.api.nvim_create_autocmd({"BufWritePre"}, {
+      callback = function()vim.lsp.buf.format { async = false }end
+  })
+end
+
 -- See:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = {
@@ -14,7 +21,9 @@ local servers = {
   helm_ls={},
   nil_ls={},
   eslint={},
-  gopls={},
+  gopls={
+    on_attach=format_on_close
+  },
   pyright={},
   bashls={},
   --dockerls={},
@@ -29,11 +38,6 @@ local servers = {
 }
 
 for lsp, conf in pairs(servers) do
-  conf['on_attach'] = function()
-      if conf['_on_attach'] ~= nil then
-	  conf._on_attach()
-      end
-  end
   conf['flags'] = {
       debounce_text_changes = 150,
   }

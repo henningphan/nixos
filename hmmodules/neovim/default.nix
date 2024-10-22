@@ -69,6 +69,8 @@ in
           markdown-preview-nvim
           surround
           trouble-nvim
+          vim-repeat
+          vim-unimpaired
           vim-solarized8
         ]
         ++ cfg.extraPlugins;
