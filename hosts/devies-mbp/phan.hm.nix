@@ -87,7 +87,8 @@
         "dom.private-attribution.submission.enabled" = false;
         # I know what I'm doing
         "browser.aboutConfig.showWarning" = false;
-        "browser.translations.neverTranslateLanguages" = "en,se";
+        # https://en.wikipedia.org/wiki/IETF_language_tag
+        "browser.translations.neverTranslateLanguages" = "en,sv";
 
         # privacy
         "beacon.enabled" = false; # bluetooth location tracking
