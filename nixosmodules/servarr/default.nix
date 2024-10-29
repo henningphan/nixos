@@ -43,11 +43,11 @@ in
     ];
   # Need to figure out how to provide non-default sops file
   # to isolate this module
-  sops.defaultSopsFile = ../../secrets/servarr.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.secrets."deluge/authFile" = {
-      restartUnits = [ "container@servarr.service" ];
       owner = config.users.users.deluged.name;
+      restartUnits = [ "container@servarr.service" ];
+      sopsFile = ../../secrets/servarr.yaml;
   };
 
   users.groups."servarr".gid = servarr_group_gid;
