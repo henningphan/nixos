@@ -97,8 +97,10 @@
         "geo.enabled" = true;
         "privacy.clearOnShutdown.history" = false;
         "privacy.donottrackheader.enabled" = true;
-        "privacy.resistFingerprinting" = true;
+        # https://support.mozilla.org/en-US/kb/resist-fingerprinting, it blocks copy paste images into whatsapp
+        #"privacy.resistFingerprinting" = true;
         "privacy.resistFingerprinting.pbmode" = true;
+
         "privacy.trackingprotection.cryptomining.enabled" = true;
         "privacy.trackingprotection.emailtracking.enabled" = true;
         "privacy.trackingprotection.enabled" = true;
