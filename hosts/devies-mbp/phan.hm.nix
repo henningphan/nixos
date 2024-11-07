@@ -62,7 +62,7 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-bin;
+    package = pkgs.writeTextDir "firefox" "null";
     profiles.default = {
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         bitwarden
@@ -96,6 +96,9 @@
         "device.sensors.enabled" = false;
         "geo.enabled" = true;
         "privacy.clearOnShutdown.history" = false;
+        "privacy.globalprivacycontrol.was_ever_enabled" = true;
+        "privacy.globalprivacycontrol.enabled" = true;
+        "privacy.bounceTrackingProtection.hasMigratedUserActivationData" = true;
         "privacy.donottrackheader.enabled" = true;
         # https://support.mozilla.org/en-US/kb/resist-fingerprinting, it blocks copy paste images into whatsapp
         #"privacy.resistFingerprinting" = true;
