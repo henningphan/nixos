@@ -134,6 +134,7 @@ in
                       download_location = "/opt/servarr/deluge/incomplete";
                       move_completed = true;
                       move_completed_path = "/opt/servarr/deluge/downloads";
+                      enabled_plugins = [ "Label" ];
                   };
                   dataDir = "/opt/servarr/deluge";
                   declarative = true;
