@@ -13,7 +13,15 @@
     ../../hmmodules/tmux
   ];
 
-  home.packages = with pkgs; [
+  home.packages = let
+    vpn = pkgs.writeShellScriptBin "vpn" ''
+      #!/bin/bash
+      set -e
+      export POINTSHARP_TOKEN="$(cloak view vcc)"
+      vccvpn "$@"
+      '';
+    in with pkgs; [
+    cloak
     devenv
     direnv
     git
@@ -28,6 +36,7 @@
     slack
     teams-for-linux
     ungoogled-chromium
+    vpn
     xclip
     yq
   ];
