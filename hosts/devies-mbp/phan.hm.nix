@@ -41,7 +41,6 @@
     comma
     direnv
     silver-searcher
-    spotify
 
   ];
 
