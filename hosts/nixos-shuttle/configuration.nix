@@ -96,6 +96,7 @@
     enable = true;
     exports = ''
       /opt/servarr/tv-shows    192.168.1.0/24(anongid=20,rw,insecure,sync,no_subtree_check)
+      /opt/servarr/movies      192.168.1.0/24(anongid=20,rw,insecure,sync,no_subtree_check)
     '';
   };
 
