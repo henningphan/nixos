@@ -17,6 +17,7 @@
     ../../nixosmodules/nvim.nix
     ../../nixosmodules/tmux.nix
     ../../nixosmodules/servarr
+    ../../nixosmodules/nfs.nix
   ];
 
   virtualisation.docker.enable = true;
@@ -92,19 +93,10 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  services.nfs.server = {
-    enable = true;
-    exports = ''
-      /opt/servarr/tv-shows    192.168.1.0/24(anongid=20,rw,insecure,sync,no_subtree_check)
-      /opt/servarr/movies      192.168.1.0/24(anongid=20,rw,insecure,sync,no_subtree_check)
-    '';
-  };
-
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     22
     111
-    2049
   ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.enable = true;
