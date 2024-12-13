@@ -22,6 +22,7 @@
       '';
     in with pkgs; [
     cloak
+    comma
     devenv
     direnv
     git
