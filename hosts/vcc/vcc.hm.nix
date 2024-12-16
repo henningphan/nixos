@@ -1,4 +1,4 @@
-{ cdsid, email}:
+{ cdsid, email }:
 { config, pkgs, ... }:
 {
   home.username = "${cdsid}";
@@ -13,34 +13,40 @@
     ../../hmmodules/tmux
   ];
 
-  home.packages = let
-    vpn = pkgs.writeShellScriptBin "vpn" ''
-      #!/bin/bash
-      set -e
-      export POINTSHARP_TOKEN="$(cloak view vcc)"
-      vccvpn "$@"
+  home.packages =
+    let
+      vpn = pkgs.writeShellScriptBin "vpn" ''
+        #!/bin/bash
+        set -e
+        export POINTSHARP_TOKEN="$(cloak view vcc)"
+        vccvpn "$@"
       '';
-    in with pkgs; [
-    cloak
-    comma
-    devenv
-    direnv
-    git
-    git-review
-    libreoffice
-    nh
-    nix
-    nix-direnv
-    python311Packages.grip
-    remmina
-    silver-searcher
-    slack
-    teams-for-linux
-    ungoogled-chromium
-    vpn
-    xclip
-    yq
-  ];
+    in
+    with pkgs;
+    [
+      brightnessctl
+      cloak
+      comma
+      devenv
+      direnv
+      element-desktop
+      git
+      git-review
+      libreoffice
+      nh
+      nix
+      nix-direnv
+      nix-index
+      python311Packages.grip
+      remmina
+      silver-searcher
+      slack
+      teams-for-linux
+      ungoogled-chromium
+      vpn
+      xclip
+      yq
+    ];
 
   programs.neovim.extraPlugins = with pkgs.vimPlugins; [ copilot-vim ];
   # Let Home Manager install and manage itself.
