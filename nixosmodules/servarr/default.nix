@@ -82,6 +82,7 @@ in
   users.groups."servarr".gid = servarr_group_gid;
   users.users = servarr_users;
   containers.servarr = {
+    enableTun = true;
     autoStart = true;
     # enable plex hardware acceleration
     allowedDevices = [
@@ -139,6 +140,17 @@ in
         };
         users.users = servarr_users;
         services = {
+
+          tailscale = {
+            enable = true;
+            authKeyFile = "/root/tailscale_key";
+            authKeyParameters.preauthorized = true;
+            openFirewall = true;
+            useRoutingFeatures = "both";
+            extraUpFlags =
+              [
+              ];
+          };
           sabnzbd = {
             enable = true;
             user = "sabnzbd";
@@ -203,14 +215,13 @@ in
           builtins.elem (pkgs.lib.getName pkg) [
             "plexmediaserver"
           ];
-        environment.systemPackages = with pkgs; [
-          vim
-          silver-searcher
-        ];
-
-        users.groups."servarr".gid = servarr_group_gid;
-        system.stateVersion = "23.11"; # Did you read the comment?
       };
+    environment.systemPackages = with pkgs; [
+      vim
+      silver-searcher
+    ];
+
+    system.stateVersion = "23.11"; # Did you read the comment?
   };
 
 }
