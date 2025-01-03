@@ -9,6 +9,7 @@
 
   imports = [
     ../../hmmodules/bash
+    ../../hmmodules/zsh
     ../../hmmodules/neovim
     ../../hmmodules/tmux
   ];

@@ -79,6 +79,8 @@
     #media-session.enable = true;
   };
 
+  programs.zsh.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -90,6 +92,7 @@
       "networkmanager"
       "wheel"
     ];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       #  thunderbird
     ];
