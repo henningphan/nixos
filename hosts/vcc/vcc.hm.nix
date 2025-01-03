@@ -41,6 +41,7 @@
       remmina
       silver-searcher
       slack
+      spotify
       teams-for-linux
       ungoogled-chromium
       vpn
@@ -83,6 +84,7 @@
         "browser.urlbar.showSearchSuggestionsFirst" = false;
         "dom.security.https_only_mode" = true;
         "dom.security.https_only_mode_ever_enabled" = true;
+        "browser.translations.neverTranslateLanguages" = "en,sv";
       };
     };
   };
