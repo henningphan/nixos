@@ -138,6 +138,7 @@ in
             }
           ];
         };
+        users.groups."servarr".gid = servarr_group_gid;
         users.users = servarr_users;
         services = {
 
@@ -215,13 +216,13 @@ in
           builtins.elem (pkgs.lib.getName pkg) [
             "plexmediaserver"
           ];
-      };
-    environment.systemPackages = with pkgs; [
-      vim
-      silver-searcher
-    ];
+        environment.systemPackages = with pkgs; [
+          vim
+          silver-searcher
+        ];
 
-    system.stateVersion = "23.11"; # Did you read the comment?
+        system.stateVersion = "23.11"; # Did you read the comment?
+      };
   };
 
 }
