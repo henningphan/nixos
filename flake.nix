@@ -56,12 +56,7 @@
           sops-nix.nixosModules.sops
         ];
       };
-      nixosConfigurations."vcc" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/vcc/configuration.nix
-        ];
-      };
+      lib.vcc = import ./hosts/vcc/configuration.nix;
       hmCreator =
         { cdsid, email }@hmArgs:
         home-manager.lib.homeManagerConfiguration {
