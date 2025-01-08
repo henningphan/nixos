@@ -1,9 +1,11 @@
+defaultShell:
+''
 set -g activity-action other
 set -g assume-paste-time 1
 set -g base-index 0
 set -g bell-action any
 set -g default-command ""
-set -g default-shell ~/.nix-profile/bin/zsh
+set -g default-shell ${defaultShell}
 set -g default-size 80x24
 set -g destroy-unattached off
 set -g detach-on-destroy on
@@ -53,3 +55,4 @@ set -g visual-activity off
 set -g visual-bell off
 set -g visual-silence off
 set -g word-separators " "
+''

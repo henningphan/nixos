@@ -32,6 +32,7 @@
     ../../mac/copy-to-spotlight.nix
   ];
 
+  henning.tmux.enable = true;
   #  nixpkgs.config.allowUnfree = true; # has no effect https://github.com/nix-community/home-manager/issues/2942
   nixpkgs.config.allowUnfreePredicate = (_: true);
   # The home.packages option allows you to install Nix packages into your

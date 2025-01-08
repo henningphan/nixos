@@ -13,7 +13,8 @@
     ../../hmmodules/neovim
     ../../hmmodules/tmux
   ];
-
+  henning.tmux.enable = true;
+  henning.tmux.defaultShell = "~/.nix-profile/bin/zsh";
   home.packages =
     let
       vpn = pkgs.writeShellScriptBin "vpn" ''
