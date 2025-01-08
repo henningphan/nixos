@@ -12,7 +12,10 @@
     ../../hmmodules/zsh
     ../../hmmodules/neovim
     ../../hmmodules/tmux
+    ../../hmmodules/firefox
   ];
+
+  henning.firefox.enable = true;
   henning.tmux.enable = true;
   henning.tmux.defaultShell = "~/.nix-profile/bin/zsh";
   home.packages =
@@ -65,30 +68,6 @@
     userEmail = "${email}";
     userName = "Henning phan";
     extraConfig.gitreview.remote = "origin";
-  };
-
-  programs.firefox = {
-    enable = true;
-    profiles.default = {
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        consent-o-matic
-        darkreader
-        firefox-translations
-        leechblock-ng
-        privacy-badger
-        tridactyl
-        ublock-origin
-        youtube-nonstop
-      ];
-      search.default = "DuckDuckGo";
-      search.force = true;
-      settings = {
-        "browser.urlbar.showSearchSuggestionsFirst" = false;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "browser.translations.neverTranslateLanguages" = "en,sv";
-      };
-    };
   };
 
 }

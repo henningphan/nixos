@@ -98,18 +98,6 @@
     ];
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-  programs.firefox.policies = {
-    AppAutoUpdate = false;
-    DisableAppUpdate = true;
-    DisableFirefoxStudies = true;
-    DisableTelemetry = true;
-    DontCheckDefaultBrowser = true;
-    OfferToSaveLogins = false;
-    PasswordManagerEnabled = false;
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
