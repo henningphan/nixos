@@ -6,7 +6,7 @@
   };
   programs.atuin = {
     enable = true;
-     enableZshIntegration = true;
+    enableZshIntegration = true;
     flags = [
       "--disable-up-arrow"
     ];
@@ -28,7 +28,7 @@
       gpr = "git pull --rebase";
       gau = "git add -u ";
       gd = "git diff";
-      gl =  "git log --name-status";
+      gl = "git log --name-status";
       gs = "git status";
       s = "sudo --preserve-env --preserve-env=PATH env";
     };
@@ -38,7 +38,9 @@
           ./result/bin/openconnect-sso -p VolvoCars-Linux_Profile.xml
       }
       eval "$(direnv hook zsh)"
-      '';
+      bindkey -M vicmd v edit-command-line
+      bindkey -v
+    '';
 
     cdpath = [ "~/repo" ];
     oh-my-zsh = {
