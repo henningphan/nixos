@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 let
   #lib = pkgs.lib;
   cfg = config.henning.firefox;
@@ -6,38 +6,40 @@ in
 {
   options.henning.firefox = {
     enable = pkgs.lib.mkEnableOption "henning firefox";
-    #    package = lib.mkPackageOption pkgs "firefox" {nullable=true;};
+    package = pkgs.lib.mkPackageOption pkgs "firefox" {
+      nullable = true;
+      default = [ "firefox" ];
+    };
   };
 
-  config = pkgs.lib.mkIf cfg.enable {
-    programs.firefox = {
-      enable = true;
-      #package = cfg.package;
-      profiles.default = {
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          bitwarden
-          consent-o-matic
-          darkreader
-          leechblock-ng
-          privacy-badger
-          tridactyl
-          ublock-origin
-          youtube-nonstop
-        ];
+  config.programs.firefox = pkgs.lib.mkIf cfg.enable {
+    enable = true;
+    package = cfg.package;
+    policies = {
+      AppAutoUpdate = false;
+      DisableAppUpdate = true;
+      DisableFirefoxStudies = true;
+      DisableTelemetry = true;
+      DontCheckDefaultBrowser = true;
+      OfferToSaveLogins = false;
+      PasswordManagerEnabled = false;
+    };
+    profiles.default = {
+      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        bitwarden
+        consent-o-matic
+        darkreader
+        leechblock-ng
+        privacy-badger
+        tridactyl
+        ublock-origin
+        youtube-nonstop
+      ];
 
-        search.default = "DuckDuckGo";
-        search.force = true;
-        policies = {
-          AppAutoUpdate = false;
-          DisableAppUpdate = true;
-          DisableFirefoxStudies = true;
-          DisableTelemetry = true;
-          DontCheckDefaultBrowser = true;
-          OfferToSaveLogins = false;
-          PasswordManagerEnabled = false;
-        };
+      search.default = "DuckDuckGo";
+      search.force = true;
 
-        settings = {
+      settings = {
         # enable installed extensions
         "extensions.autoDisableScopes" = 0;
         "browser.urlbar.showSearchSuggestionsFirst" = false;
@@ -98,7 +100,6 @@ in
         "cookiebanners.service.mode" = 2;
         "cookiebanners.service.mode.privateBrowsing" = 2;
       };
-    };
     };
 
   };
