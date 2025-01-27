@@ -1,6 +1,15 @@
 { cdsid, email }:
 { config, pkgs, ... }:
 {
+   dconf = {
+    settings."org/gnome/shell" = {
+      disable-user-extensions = false;
+      enabled-extensions = with pkgs.gnomeExtensions; [
+        dash-to-dock.extensionUuid
+        dash-to-panel.extensionUuid
+      ];
+    };
+  };
   home.username = "${cdsid}";
   home.homeDirectory = "/home/${cdsid}";
 
@@ -37,6 +46,8 @@
       element-desktop
       git
       git-review
+      gnomeExtensions.dash-to-dock
+      gnomeExtensions.dash-to-panel
       libreoffice
       nh
       nix

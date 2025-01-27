@@ -10,10 +10,18 @@
     ./hardware-configuration.nix
   ];
 
+   virtualisation.virtualbox.host.enable = true;
+   users.extraGroups.vboxusers.members = [ "tphan1" ];
+
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "kvm.enable_virt_at_load=0" ];
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = "1";
+  };
 
   networking.hostName = "5CG4420JHL"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -108,6 +116,7 @@
     #  wget
     neovim
     git
+    vagrant
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
