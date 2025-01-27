@@ -148,9 +148,8 @@ in
             authKeyParameters.preauthorized = true;
             openFirewall = true;
             useRoutingFeatures = "both";
-            extraUpFlags =
-              [
-              ];
+            extraUpFlags = [
+            ];
           };
           sabnzbd = {
             enable = true;
