@@ -1,12 +1,18 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.henning.tmux;
-in {
+in
+{
   options.henning.tmux = {
     enable = pkgs.lib.mkEnableOption "henning tmux";
     defaultShell = lib.mkOption {
-        type = lib.types.str;
-        default = "/run/current-system/sw/bin/bash";
+      type = lib.types.str;
+      default = "/run/current-system/sw/bin/bash";
     };
 
   };
