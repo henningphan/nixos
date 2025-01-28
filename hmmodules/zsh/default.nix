@@ -40,6 +40,7 @@
       eval "$(direnv hook zsh)"
       bindkey -M vicmd v edit-command-line
       bindkey -v
+      unsetopt HIST_VERIFY
     '';
 
     cdpath = [ "~/repo" ];
