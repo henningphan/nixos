@@ -57,9 +57,7 @@
         ];
       };
       lib.vcc = import ./hosts/vcc/configuration.nix;
-      hmCreator =
-        { cdsid, email }@hmArgs:
-        home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."vcc@vcc" = home-manager.lib.homeManagerConfiguration {
           pkgs = pkgs_x86_64-linux;
           modules = [
             {
@@ -67,9 +65,9 @@
                 nur.overlay
               ];
             }
-            ((import ./hosts/vcc/vcc.hm.nix) hmArgs)
+            ./hosts/vcc/vcc.hm.nix
           ];
-        };
+      };
       homeConfigurations."henning@devies-mbp" = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs_aarch64-darwin;
         modules = [
