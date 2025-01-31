@@ -56,6 +56,7 @@ let
   };
 in
 {
+
   systemd.tmpfiles.rules = [
     # setup persistent data files that servarr requires
     # see for definition: https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
@@ -210,6 +211,11 @@ in
             user = "sonarr";
           };
         };
+      nixpkgs.config.permittedInsecurePackages = [
+            "dotnet-sdk-6.0.428"
+            "aspnetcore-runtime-6.0.36"
+          ];
+
         nixpkgs.config.allowUnfreePredicate =
           pkg:
           builtins.elem (pkgs.lib.getName pkg) [
