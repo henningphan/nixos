@@ -14,6 +14,10 @@
 #
 # Plex, first time visiting the website you have to append the path /web
 # example 192.168.1.12:32400/web
+#
+# If after rebuild the network disappears it can be resolved by killing the proccess
+# use "lsns -t net", to find culprit process
+#
 { config, pkgs, ... }:
 let
   deluge_web_port = 8112;
