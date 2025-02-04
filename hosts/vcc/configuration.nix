@@ -117,6 +117,7 @@
     neovim
     git
     vagrant
+    python313Full
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
