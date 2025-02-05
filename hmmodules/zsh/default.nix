@@ -35,7 +35,7 @@
     initExtra = ''
       startcisco(){
         cd ~/repo/openconnect-sso/ || exit 1
-          ./result/bin/openconnect-sso -p VolvoCars-Linux_Profile.xml
+          ./result/bin/openconnect-sso -p VolvoCars-Linux_Profile.xml --ac-version 5.1.6.103
       }
       eval "$(direnv hook zsh)"
       bindkey -M vicmd v edit-command-line
