@@ -41,6 +41,7 @@
       bindkey -M vicmd v edit-command-line
       bindkey -v
       unsetopt HIST_VERIFY
+      [[ -f ~/.zsh.d/local ]] && . ~/.zsh.d/local
     '';
 
     cdpath = [ "~/repo" ];
