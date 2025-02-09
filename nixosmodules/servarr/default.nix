@@ -15,8 +15,10 @@
 # Plex, first time visiting the website you have to append the path /web
 # example 192.168.1.12:32400/web
 #
+# https://discourse.nixos.org/t/macvlan-network-devices-not-being-properly-cleaned-up/36501
 # If after rebuild the network disappears it can be resolved by killing the proccess
 # use "lsns -t net", to find culprit process
+# kill -KILL <PID>
 #
 { config, pkgs, ... }:
 let
