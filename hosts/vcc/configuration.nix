@@ -8,12 +8,12 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../nixosmodules/playground
   ];
 
   virtualisation.docker.enable = true;
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "tphan1" ];
-
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -22,6 +22,15 @@
   boot.kernelParams = [ "kvm.enable_virt_at_load=0" ];
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = "1";
+  };
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      libgcc
+      glibc
+    ];
   };
 
   networking.hostName = "5CG4420JHL"; # Define your hostname.

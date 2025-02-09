@@ -1,17 +1,18 @@
 { config, pkgs, ... }:
 let
   lib = pkgs.lib;
-  interface = "wlp0s20f3";
+  interface = "enp0s13f0u3u1c2";
+  shortInterface = builtins.substring 0 5 interface;
 in
 {
-  networking.macvlans."mv-${interface}-host" = {
+  networking.macvlans."mv-${shortInterface}-host" = {
     interface = interface;
     mode = "bridge";
   };
-  networking.interfaces."mv-${interface}-host" = {
+  networking.interfaces."mv-${shortInterface}-host" = {
     ipv4.addresses = [
       {
-        address = "192.168.1.1";
+        address = "192.168.1.24";
         prefixLength = 24;
       }
     ];
@@ -19,9 +20,7 @@ in
 
   containers.play = {
     autoStart = true;
-    # enable plex hardware acceleration
-    # persist servarr config and media
-    privateNetwork = false;
+    privateNetwork = true;
     macvlans = [ interface ];
     config =
       { config, pkgs, ... }:
@@ -29,7 +28,7 @@ in
 
         nixpkgs.config.allowUnfree = true;
         networking.firewall.enable = false;
-        networking.interfaces."mv-${interface}" = {
+        networking.interfaces."mv-enp0s13ffGxe" = {
           ipv4.addresses = [
             {
               address = "192.168.1.13";
@@ -48,7 +47,7 @@ in
           silver-searcher
         ];
 
-        system.stateVersion = "23.11"; # Did you read the comment?
+        system.stateVersion = "23.11";
       };
 
   };
