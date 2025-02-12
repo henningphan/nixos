@@ -60,180 +60,64 @@ let
       group = "servarr";
     };
   };
+  cfg = config.servarr;
 in
 {
-
-  systemd.tmpfiles.rules = [
-    # setup persistent data files that servarr requires
-    # see for definition: https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
-    "d /opt/servarr 770 root servarr - -"
-    "d /opt/servarr/tv-shows 770 plex servarr - -"
-    "d /opt/servarr/movies 770 plex servarr - -"
-    "d /opt/servarr/sabnzbd/complete 770 sabnzbd servarr - -"
-    "d /opt/servarr/sabnzbd/incomplete 770 sabnzbd servarr - -"
-  ];
-  # Need to figure out how to provide non-default sops file
-  # to isolate this module
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.secrets."deluge/authFile" = {
-    owner = config.users.users.deluged.name;
-    restartUnits = [ "container@servarr.service" ];
-    sopsFile = ../../secrets/servarr.yaml;
-  };
-  sops.secrets."sabnzbd/config" = {
-    owner = config.users.users.sabnzbd.name;
-    restartUnits = [ "container@servarr.service" ];
-    sopsFile = ../../secrets/servarr.yaml;
-  };
-
-  users.groups."servarr".gid = servarr_group_gid;
-  users.users = servarr_users;
-  containers.servarr = {
-    enableTun = true;
-    autoStart = true;
-    # enable plex hardware acceleration
-    allowedDevices = [
-      {
-        modifier = "rw";
-        node = "/dev/dri/card0";
-      }
-      {
-        modifier = "rw";
-        node = "/dev/dri/renderD128";
-      }
-    ];
-    # persist servarr config and media
-    bindMounts = {
-      "/opt/servarr" = {
-        hostPath = "/opt/servarr";
-        isReadOnly = false;
-      };
-      "/dev/dri" = {
-        hostPath = "/dev/dri";
-        isReadOnly = false;
-      };
-      # TODO Maybe its possible to put the secret directly into the container
-      # instead of bind mounting it
-      "/run/secrets/deluge/authFile" = {
-        hostPath = "/run/secrets/deluge/authFile";
-        isReadOnly = true;
-      };
-      "/run/secrets/sabnzbd/config" = {
-        hostPath = "/run/secrets/sabnzbd/config";
-        isReadOnly = true;
-      };
+  options.servarr = {
+    enable = lib.mkEnableOption "servarr";
+    gid = lib.mkOption {
+      type = lib.types.int;
+      default = 10001;
+      description = "shared group id between all services";
     };
-    privateNetwork = true;
-    macvlans = [ "enp1s0" ];
-
-    config =
-      { config, pkgs, ... }:
-      {
-
-        fileSystems."/var/lib/private/prowlarr" = {
-          device = "/opt/servarr/prowlarr";
-          options = [ "bind" ];
-        };
-        nixpkgs.config.allowUnfree = true;
-        networking.defaultGateway = "192.168.1.1";
-        networking.firewall.enable = true;
-        networking.interfaces.mv-enp1s0 = {
-          ipv4.addresses = [
-            {
-              address = "192.168.1.12";
-              prefixLength = 24;
-            }
-          ];
-        };
-        users.groups."servarr".gid = servarr_group_gid;
-        users.users = servarr_users;
-        services = {
-
-          tailscale = {
-            enable = true;
-            authKeyFile = "/root/tailscale_key";
-            authKeyParameters.preauthorized = true;
-            openFirewall = true;
-            useRoutingFeatures = "both";
-            extraUpFlags = [
-            ];
-          };
-          sabnzbd = {
-            enable = true;
-            user = "sabnzbd";
-            group = "servarr";
-            openFirewall = true;
-            configFile = "/run/secrets/sabnzbd/config";
-          };
-          deluge = {
-            authFile = "/run/secrets/deluge/authFile";
-            # To see available config options
-            # https://git.deluge-torrent.org/deluge/tree/deluge/core/preferencesmanager.py#n37
-            config = {
-              download_location = "/opt/servarr/deluge/incomplete";
-              move_completed = true;
-              move_completed_path = "/opt/servarr/deluge/downloads";
-              enabled_plugins = [ "Label" ];
-            };
-            dataDir = "/opt/servarr/deluge";
-            declarative = true;
-            enable = true;
-            group = "servarr";
-            user = "deluged";
-            openFirewall = true;
-            web = {
-              enable = true;
-              openFirewall = true;
-              port = deluge_web_port;
-            };
-          };
-          jellyseerr = {
-            enable = true;
-            openFirewall = true;
-          };
-          radarr = {
-            enable = true;
-            openFirewall = true;
-            dataDir = "/opt/servarr/radarr";
-            group = "servarr";
-            user = "radarr";
-          };
-          plex = {
-            enable = true;
-            dataDir = "/opt/servarr/plex";
-            openFirewall = true;
-            group = "servarr";
-            user = "plex";
-          };
-          prowlarr = {
-            enable = true;
-            openFirewall = true;
-          };
-          sonarr = {
-            enable = true;
-            openFirewall = true;
-            dataDir = "/opt/servarr/sonarr";
-            group = "servarr";
-            user = "sonarr";
-          };
-        };
-      nixpkgs.config.permittedInsecurePackages = [
-            "dotnet-sdk-6.0.428"
-            "aspnetcore-runtime-6.0.36"
-          ];
-
-        nixpkgs.config.allowUnfreePredicate =
-          pkg:
-          builtins.elem (pkgs.lib.getName pkg) [
-            "plexmediaserver"
-          ];
-        environment.systemPackages = with pkgs; [
-          vim
-          silver-searcher
-        ];
-
-        system.stateVersion = "23.11"; # Did you read the comment?
-      };
+    servarr_users = lib.mkOption {
+      type = lib.types.attrs;
+      default = servarr_users;
+      description = "attrset of all service users";
+    };
+    plexHardwareAcceleration = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "mounts required devices into the container to enable hardware acceleration";
+    };
   };
 
+  #
+  # imports contains the nixos-containers nspawn containers
+  #
+  imports = [
+    ./plex.nix
+    ./servarr.nix
+  ];
+
+  #
+  # The following are things that need to exist on host, and maybe in the containers
+  #
+  config.systemd.tmpfiles.rules  = lib.mkIf cfg.enable [
+      # setup persistent data files that servarr requires
+      # see for definition: https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
+      "d /opt/servarr 770 root servarr - -"
+      "d /opt/servarr/tv-shows 770 plex servarr - -"
+      "d /opt/servarr/movies 770 plex servarr - -"
+      "d /opt/servarr/sabnzbd/complete 770 sabnzbd servarr - -"
+      "d /opt/servarr/sabnzbd/incomplete 770 sabnzbd servarr - -"
+    ];
+    config.sops = lib.mkIf cfg.enable {
+    # Need to figure out how to provide non-default sops file
+    # to isolate this module
+    gnupg.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets."deluge/authFile" = {
+      owner = config.users.users.deluged.name;
+      restartUnits = [ "container@servarr.service" ];
+      sopsFile = ../../secrets/servarr.yaml;
+    };
+    secrets."sabnzbd/config" = {
+      owner = config.users.users.sabnzbd.name;
+      restartUnits = [ "container@servarr.service" ];
+      sopsFile = ../../secrets/servarr.yaml;
+    };
+  };
+
+    config.users.groups."servarr".gid = lib.mkIf cfg.enable cfg.gid;
+    config.users.users = lib.mkIf cfg.enable cfg.servarr_users;
 }

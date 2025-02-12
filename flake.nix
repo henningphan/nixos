@@ -2,6 +2,7 @@
   description = "Home Manager configuration of henning";
 
   inputs = {
+    deploy-rs.url = "github:serokell/deploy-rs";
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -18,12 +19,14 @@
 
   outputs =
     inputs@{
+      self,
       nixpkgs,
       home-manager,
       nixpkgs-firefox-darwin,
       nur,
       sops-nix,
       nix-darwin,
+      deploy-rs,
       ...
     }:
     let
@@ -39,6 +42,25 @@
       formatter.x86_64-linux = pkgs_x86_64-linux.nixfmt-rfc-style;
       formatter.aarch64-darwin = pkgs_aarch64-darwin.nixfmt-rfc-style;
 
+      deploy.nodes.nixos-shuttle = {
+        hostname = "192.168.1.11";
+        profiles.system = {
+          sshUser = "henning";
+          sshOpts = [
+            "-i"
+            "/home/tphan1/.ssh/id_ed25519.del"
+          ];
+          user = "root";
+          remoteBuild = true;
+          autoRollback = true;
+          magicRollback = true;
+          interactiveSudo = true;
+
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-shuttle;
+        };
+      };
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
       darwinConfigurations.devies-mbp = darwinSystem {
         system = "aarch64-darwin";
         specialArgs = {
@@ -51,7 +73,7 @@
       };
       nixosConfigurations."nixos-shuttle" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-                pkgs = pkgs_x86_64-linux;
+        pkgs = pkgs_x86_64-linux;
         modules = [
           ./hosts/nixos-shuttle/configuration.nix
           sops-nix.nixosModules.sops
@@ -59,15 +81,15 @@
       };
       lib.vcc = import ./hosts/vcc/configuration.nix;
       homeConfigurations."vcc@vcc" = home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgs_x86_64-linux;
-          modules = [
-            {
-              nixpkgs.overlays = [
-                nur.overlay
-              ];
-            }
-            ./hosts/vcc/vcc.hm.nix
-          ];
+        pkgs = pkgs_x86_64-linux;
+        modules = [
+          {
+            nixpkgs.overlays = [
+              nur.overlay
+            ];
+          }
+          ./hosts/vcc/vcc.hm.nix
+        ];
       };
       homeConfigurations."henning@devies-mbp" = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs_aarch64-darwin;

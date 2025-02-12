@@ -19,6 +19,10 @@
     ../../nixosmodules/servarr
     ../../nixosmodules/nfs.nix
   ];
+  servarr = {
+    enable = true;
+    plexHardwareAcceleration = true;
+  };
 
   virtualisation.docker.enable = true;
   nix.settings.experimental-features = [
