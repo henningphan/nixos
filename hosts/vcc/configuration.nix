@@ -10,8 +10,9 @@
     ./hardware-configuration.nix
   ];
 
-   virtualisation.virtualbox.host.enable = true;
-   users.extraGroups.vboxusers.members = [ "tphan1" ];
+  virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "tphan1" ];
 
 
   # Bootloader.
@@ -93,12 +94,17 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.groups.tphan1 = {
+    name = "tphan1";
+  };
   users.users.tphan1 = {
     isNormalUser = true;
     description = "henning";
+    group = "tphan1";
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [
