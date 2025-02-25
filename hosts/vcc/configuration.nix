@@ -71,6 +71,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  programs.nix-ld.enable = true;
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
