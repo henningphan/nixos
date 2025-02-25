@@ -8,7 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../nixosmodules/playground
+    #../../nixosmodules/playground
   ];
 
   virtualisation.docker.enable = true;
