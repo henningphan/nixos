@@ -33,15 +33,23 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.useDHCP = false;
-  networking.interfaces.enp1s0.ipv4.addresses = [
-    {
-      address = "192.168.1.11";
-      prefixLength = 24;
-    }
-  ];
-  networking.defaultGateway = "192.168.1.1";
-  networking.nameservers = [ "192.168.1.1" ];
+  networking = {
+    defaultGateway = "192.168.1.1";
+    hostName = "nixos-shuttle";
+    interfaces.enp1s0.ipv4.addresses = lib.mkForce [];
+    nameservers = [ "192.168.1.1" ];
+    useDHCP = false;
+    # networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+    macvlans = {
+      mv-enp1s0-host = {
+        mode = "bridge";
+        interface = "enp1s0";
+      };
+    };
+    interfaces.mv-enp1s0-host = {
+      ipv4.addresses = [ { address = "192.168.1.11"; prefixLength = 24; } ];
+    };
+  };
 
   nix.nixPath = [
     (
@@ -51,8 +59,6 @@
     )
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
   ];
-  networking.hostName = "nixos-shuttle";
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
