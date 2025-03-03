@@ -28,6 +28,14 @@ in
           hostPath = "/dev/dri";
           isReadOnly = false;
         };
+        "/opt/servarr/movies" = {
+          hostPath = "/exports/black-masstorage/movies";
+          isReadOnly = false;
+        };
+        "/opt/servarr/tv-shows" = {
+          hostPath = "/exports/black-masstorage/tv-shows";
+          isReadOnly = false;
+        };
         # TODO Maybe its possible to put the secret directly into the container
         # instead of bind mounting it
         "/run/secrets/deluge/authFile" = {
@@ -48,6 +56,10 @@ in
 
           fileSystems."/var/lib/private/prowlarr" = {
             device = "/opt/servarr/prowlarr";
+            options = [ "bind" ];
+          };
+          fileSystems."/var/lib/private/jellyseerr" = {
+            device = "/opt/servarr/jellyseerr";
             options = [ "bind" ];
           };
           nixpkgs.config.allowUnfree = true;
