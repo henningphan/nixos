@@ -16,11 +16,11 @@
     2049
   ];
   fileSystems."/exports/tv-shows" = {
-    device = "/opt/servarr/tv-shows/";
+    device = "/exports/black-masstorage/tv-shows";
     options = [ "bind" ];
   };
   fileSystems."/exports/movies" = {
-    device = "/opt/servarr/movies";
+    device = "/exports/black-masstorage/movies";
     options = [ "bind" ];
   };
   fileSystems."/exports/black-masstorage" = {

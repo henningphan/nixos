@@ -59,6 +59,11 @@ let
       isSystemUser = true;
       group = "servarr";
     };
+    jellyfin = {
+      uid = lib.mkForce 2007;
+      isSystemUser = true;
+      group = "servarr";
+    };
   };
   cfg = config.servarr;
 in
@@ -120,4 +125,5 @@ in
 
     config.users.groups."servarr".gid = lib.mkIf cfg.enable cfg.gid;
     config.users.users = lib.mkIf cfg.enable cfg.servarr_users;
+
 }

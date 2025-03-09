@@ -19,6 +19,9 @@
     ../../nixosmodules/servarr
     ../../nixosmodules/nfs.nix
   ];
+    #  nixpkgs.config.packageOverrides = pkgs: {
+    #      vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+    #  };
   servarr = {
     enable = true;
     plexHardwareAcceleration = true;
