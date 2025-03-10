@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-        lib = pkgs.lib;
+  lib = pkgs.lib;
   cfg = config.servarr;
 in
 {
@@ -42,19 +42,19 @@ in
       { config, pkgs, ... }:
       {
         hardware.opengl = {
-            enable = true;
-            extraPackages = with pkgs; [
-                intel-media-driver
-                intel-vaapi-driver # previously vaapiIntel
-                vaapiVdpau
-                libvdpau-va-gl
-                intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
-                vpl-gpu-rt # QSV on 11th gen or newer
-                intel-media-sdk # QSV up to 11th gen
-            ];
+          enable = true;
+          extraPackages = with pkgs; [
+            intel-media-driver
+            intel-vaapi-driver # previously vaapiIntel
+            vaapiVdpau
+            libvdpau-va-gl
+            intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
+            vpl-gpu-rt # QSV on 11th gen or newer
+            intel-media-sdk # QSV up to 11th gen
+          ];
         };
         users.groups."servarr".gid = cfg.gid;
-        users.groups.render.members = ["jellyfin"];
+        users.groups.render.members = [ "jellyfin" ];
         users.users = cfg.servarr_users;
         networking.defaultGateway = "192.168.1.1";
         networking.firewall.enable = true;
@@ -74,17 +74,17 @@ in
           user = "plex";
         };
         services.jellyfin = {
-            enable = true;
-            openFirewall = true;
-            dataDir = "/opt/servarr/jellyfin";
-            group = "servarr";
+          enable = true;
+          openFirewall = true;
+          dataDir = "/opt/servarr/jellyfin";
+          group = "servarr";
         };
         system.stateVersion = "23.11"; # Did you read the comment?
-          nixpkgs.config.allowUnfreePredicate =
-            pkg:
-            builtins.elem (pkgs.lib.getName pkg) [
-              "plexmediaserver"
-            ];
+        nixpkgs.config.allowUnfreePredicate =
+          pkg:
+          builtins.elem (pkgs.lib.getName pkg) [
+            "plexmediaserver"
+          ];
       };
   };
 

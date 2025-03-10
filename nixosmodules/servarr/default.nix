@@ -98,16 +98,16 @@ in
   #
   # The following are things that need to exist on host, and maybe in the containers
   #
-  config.systemd.tmpfiles.rules  = lib.mkIf cfg.enable [
-      # setup persistent data files that servarr requires
-      # see for definition: https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
-      "d /opt/servarr 770 root servarr - -"
-      "d /opt/servarr/tv-shows 770 plex servarr - -"
-      "d /opt/servarr/movies 770 plex servarr - -"
-      "d /opt/servarr/sabnzbd/complete 770 sabnzbd servarr - -"
-      "d /opt/servarr/sabnzbd/incomplete 770 sabnzbd servarr - -"
-    ];
-    config.sops = lib.mkIf cfg.enable {
+  config.systemd.tmpfiles.rules = lib.mkIf cfg.enable [
+    # setup persistent data files that servarr requires
+    # see for definition: https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
+    "d /opt/servarr 770 root servarr - -"
+    "d /opt/servarr/tv-shows 770 plex servarr - -"
+    "d /opt/servarr/movies 770 plex servarr - -"
+    "d /opt/servarr/sabnzbd/complete 770 sabnzbd servarr - -"
+    "d /opt/servarr/sabnzbd/incomplete 770 sabnzbd servarr - -"
+  ];
+  config.sops = lib.mkIf cfg.enable {
     # Need to figure out how to provide non-default sops file
     # to isolate this module
     gnupg.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -123,7 +123,7 @@ in
     };
   };
 
-    config.users.groups."servarr".gid = lib.mkIf cfg.enable cfg.gid;
-    config.users.users = lib.mkIf cfg.enable cfg.servarr_users;
+  config.users.groups."servarr".gid = lib.mkIf cfg.enable cfg.gid;
+  config.users.users = lib.mkIf cfg.enable cfg.servarr_users;
 
 }

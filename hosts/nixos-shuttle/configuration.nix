@@ -19,9 +19,9 @@
     ../../nixosmodules/servarr
     ../../nixosmodules/nfs.nix
   ];
-    #  nixpkgs.config.packageOverrides = pkgs: {
-    #      vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
-    #  };
+  #  nixpkgs.config.packageOverrides = pkgs: {
+  #      vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  #  };
   servarr = {
     enable = true;
     plexHardwareAcceleration = true;
@@ -39,7 +39,7 @@
   networking = {
     defaultGateway = "192.168.1.1";
     hostName = "nixos-shuttle";
-    interfaces.enp1s0.ipv4.addresses = lib.mkForce [];
+    interfaces.enp1s0.ipv4.addresses = lib.mkForce [ ];
     nameservers = [ "192.168.1.1" ];
     useDHCP = false;
     # networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -50,7 +50,12 @@
       };
     };
     interfaces.mv-enp1s0-host = {
-      ipv4.addresses = [ { address = "192.168.1.11"; prefixLength = 24; } ];
+      ipv4.addresses = [
+        {
+          address = "192.168.1.11";
+          prefixLength = 24;
+        }
+      ];
     };
   };
 
