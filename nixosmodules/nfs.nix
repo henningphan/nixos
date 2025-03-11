@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   systemd.tmpfiles.rules = [
-    "d /exports 770 root henning - -"
+    "d /exports 770 root 1000 - -"
   ];
   services.nfs.server = {
     enable = true;

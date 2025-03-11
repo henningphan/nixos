@@ -15,6 +15,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../nixosmodules/nvim.nix
+    ../../nixosmodules/immich
     ../../nixosmodules/tmux.nix
     ../../nixosmodules/servarr
     ../../nixosmodules/nfs.nix
@@ -93,6 +94,7 @@
       "docker"
       "servarr"
       "wheel"
+      "immich"
     ];
     packages = with pkgs; [ ];
   };
