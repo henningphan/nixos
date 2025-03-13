@@ -32,3 +32,10 @@ vim.wo.foldmethod = 'expr'
 
 vim.keymap.set("n", "]g", vim.diagnostic.goto_next)
 vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
+vim.cmd([[
+  augroup filetypedetect
+    autocmd! BufRead,BufNewFile *.bzl set filetype=python
+    autocmd! BufRead,BufNewFile *.bazel set filetype=python
+  augroup END
+]])
+
