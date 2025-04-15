@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, vcc_name, ... }:
 
 {
   imports = [
@@ -13,7 +13,7 @@
 
   virtualisation.docker.enable = true;
   virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "tphan1" ];
+  users.extraGroups.vboxusers.members = [ vcc_name];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -63,7 +63,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "intel" ];
+  services.xserver.videoDrivers = [ "modesetting" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -103,13 +103,13 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.groups.tphan1 = {
-    name = "tphan1";
+  users.groups."${vcc_name}" = {
+    name =vcc_name;
   };
-  users.users.tphan1 = {
+  users.users."${vcc_name}" = {
     isNormalUser = true;
     description = "henning";
-    group = "tphan1";
+    group = vcc_name;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -122,7 +122,7 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  #nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
