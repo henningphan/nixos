@@ -30,6 +30,7 @@
       gd = "git diff";
       gl = "git log --name-status";
       gs = "git status";
+      tt = "taskwarrior-tui";
       s = "sudo --preserve-env --preserve-env=PATH env";
     };
     initExtra = ''
