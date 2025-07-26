@@ -14,7 +14,10 @@
     ../../mac/copy-to-spotlight.nix
   ];
 
-  home.packages = [ ];
+  home.packages = with pkgs; [
+    comma
+    nix-index
+  ];
 
   henning.tmux.enable = true;
   # Let Home Manager install and manage itself.
