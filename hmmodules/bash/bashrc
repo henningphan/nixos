@@ -110,6 +110,7 @@ set_alias(){
     alias gpr="git pull -r"
     alias amend="git commit --amend"
     alias amende="git commit --amend --no-edit"
+    alias tt="taskwarrior-tui"
 
     alias ..="cd .."
     alias ...="cd ../.."
