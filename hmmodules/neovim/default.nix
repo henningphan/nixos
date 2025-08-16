@@ -47,13 +47,14 @@ in
         lib.strings.concatMapStrings (s: s + "\n") (map mkRequire luaFiles);
 
       extraPackages = with pkgs; [
-        gopls
         go-tools
+        gopls
         lua-language-server
         marksman
         nil
         nodePackages.bash-language-server
         pyright
+        ripgrep
         shellcheck
         tree-sitter
         yaml-language-server
@@ -64,14 +65,17 @@ in
         [
           fugitive
           fzf-vim
+          markdown-preview-nvim
           nvim-lspconfig
           nvim-treesitter.withAllGrammars
-          markdown-preview-nvim
+          plenary-nvim
           surround
+          telescope-fzf-native-nvim
+          telescope-nvim
           trouble-nvim
           vim-repeat
-          vim-unimpaired
           vim-solarized8
+          vim-unimpaired
         ]
         ++ cfg.extraPlugins;
     };
