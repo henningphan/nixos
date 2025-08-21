@@ -42,23 +42,6 @@
       formatter.x86_64-linux = pkgs_x86_64-linux.nixfmt-rfc-style;
       formatter.aarch64-darwin = pkgs_aarch64-darwin.nixfmt-rfc-style;
 
-      deploy.nodes.nixos-shuttle = {
-        hostname = "192.168.1.11";
-        profiles.system = {
-          sshUser = "henning";
-          sshOpts = [
-            "-i"
-            "/home/tphan1/.ssh/id_ed25519.del"
-          ];
-          user = "root";
-          remoteBuild = true;
-          autoRollback = true;
-          magicRollback = true;
-          interactiveSudo = true;
-
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-shuttle;
-        };
-      };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
       darwinConfigurations.devies-mbp = darwinSystem {
@@ -68,14 +51,6 @@
         };
         modules = [
           ./hosts/devies-mbp/darwin-configuration.nix
-          sops-nix.nixosModules.sops
-        ];
-      };
-      nixosConfigurations."nixos-shuttle" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        pkgs = pkgs_x86_64-linux;
-        modules = [
-          ./hosts/nixos-shuttle/configuration.nix
           sops-nix.nixosModules.sops
         ];
       };
@@ -122,9 +97,9 @@
           ./hosts/devies-mbp/phan.hm.nix
         ];
       };
-      homeConfigurations."henning@nixos-shuttle" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."henning@shuttle" = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs_x86_64-linux;
-        modules = [ ./hosts/nixos-shuttle/henning.hm.nix ];
+        modules = [ ./hosts/shuttle/henning.hm.nix ];
       };
     };
 }
