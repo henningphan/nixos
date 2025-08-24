@@ -66,7 +66,7 @@
         modules = [
           {
             nixpkgs.overlays = [
-              nur.overlay
+              nur.overlays.default
             ];
           }
           ./hosts/vcc/vcc.hm.nix
@@ -78,7 +78,7 @@
           {
             nixpkgs.overlays = [
               nixpkgs-firefox-darwin.overlay
-              nur.overlay
+              nur.overlays.default
             ];
           }
           ./hosts/devies-mbp/henning.hm.nix
@@ -90,7 +90,7 @@
           {
             nixpkgs.overlays = [
               nixpkgs-firefox-darwin.overlay
-              nur.overlay
+              nur.overlays.default
             ];
           }
           ./hosts/devies-mbp/phan.hm.nix

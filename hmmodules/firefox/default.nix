@@ -25,7 +25,7 @@ in
       PasswordManagerEnabled = false;
     };
     profiles.default = {
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         bitwarden
         consent-o-matic
         darkreader
@@ -36,7 +36,7 @@ in
         youtube-nonstop
       ];
 
-      search.default = "DuckDuckGo";
+      search.default = "ddg";
       search.force = true;
 
       settings = {
