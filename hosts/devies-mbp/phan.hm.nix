@@ -26,6 +26,7 @@
 
   imports = [
     ../../hmmodules/bash
+    ../../hmmodules/zsh
     ../../hmmodules/macdotatoggle
     ../../hmmodules/neovim
     ../../hmmodules/tmux
@@ -34,6 +35,7 @@
   ];
 
   henning.tmux.enable = true;
+  henning.tmux.defaultShell = "~/.nix-profile/bin/zsh";
   #  nixpkgs.config.allowUnfree = true; # has no effect https://github.com/nix-community/home-manager/issues/2942
   nixpkgs.config.allowUnfreePredicate = (_: true);
   # The home.packages option allows you to install Nix packages into your
