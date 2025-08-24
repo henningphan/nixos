@@ -11,7 +11,7 @@
     };
     nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
     nur.url = "github:nix-community/NUR";
-    nix-darwin.url = "github:lnl7/nix-darwin/master";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -51,7 +51,6 @@
         };
         modules = [
           ./hosts/devies-mbp/darwin-configuration.nix
-          sops-nix.nixosModules.sops
         ];
       };
       lib.vcc = import ./hosts/vcc/configuration.nix;
