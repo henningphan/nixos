@@ -42,14 +42,17 @@ vim.keymap.set('n', '<leader>ff', vim.find_files_from_project_git_root, { desc =
 vim.keymap.set('n', '<leader>fg', live_grep_from_project_git_root, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+local telescope = require("telescope")
 local actions = require("telescope.actions")
-require("telescope").setup{
+
+telescope.setup({
   defaults = {
     mappings = {
       i = {
-        ["<C-u>"] = false
+        ["<C-u>"] = false,
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
       },
     },
-  }
-}
-
+  },
+})
