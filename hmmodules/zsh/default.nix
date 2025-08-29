@@ -33,7 +33,7 @@
       tt = "taskwarrior-tui";
       s = "sudo --preserve-env --preserve-env=PATH env";
     };
-    initExtra = ''
+    initContent = ''
       startcisco(){
         cd ~/repo/openconnect-sso/ || exit 1
           ./result/bin/openconnect-sso -p VolvoCars-Linux_Profile.xml --ac-version 5.1.6.103
