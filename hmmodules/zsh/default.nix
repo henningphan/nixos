@@ -15,6 +15,12 @@
     };
   };
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.zsh = {
     enable = true;
     autosuggestion = {
@@ -38,7 +44,6 @@
         cd ~/repo/openconnect-sso/ || exit 1
           ./result/bin/openconnect-sso -p VolvoCars-Linux_Profile.xml --ac-version 5.1.6.103
       }
-      eval "$(direnv hook zsh)"
       bindkey -M vicmd v edit-command-line
       bindkey -v
       unsetopt HIST_VERIFY
