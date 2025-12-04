@@ -103,5 +103,9 @@
         pkgs = pkgs_x86_64-linux;
         modules = [ ./hosts/shuttle/henning.hm.nix ];
       };
+      homeConfigurations."henning@nixos" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgs_x86_64-linux;
+        modules = [ ./hosts/sofac/henning.hm.nix ];
+      };
     };
 }
