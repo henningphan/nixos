@@ -16,6 +16,7 @@
   home.packages = with pkgs; [
     comma
     nix-index
+    silver-searcher
   ];
 
   henning.tmux.enable = true;
