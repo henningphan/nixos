@@ -11,6 +11,7 @@
     ../../hmmodules/macdotatoggle
     ../../hmmodules/neovim
     ../../hmmodules/tmux
+    ../../hmmodules/zsh
   ];
 
   home.packages = with pkgs; [
@@ -18,8 +19,11 @@
     nix-index
     silver-searcher
   ];
+  home.shell.enableZshIntegration = true;
 
   henning.tmux.enable = true;
+  henning.tmux.defaultShell = "${pkgs.zsh}/bin/zsh";
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   programs.fzf = {
@@ -31,6 +35,12 @@
     enable = true;
     userName = "Henning Phan";
     userEmail = "github@h.phan.se";
+  };
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
   };
 
   # This value determines the Home Manager release that your configuration is
