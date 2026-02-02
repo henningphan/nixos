@@ -27,7 +27,7 @@ in
       defaultEditor = true;
       enable = true;
       vimAlias = true;
-      extraLuaConfig =
+      initLua =
         let
           luaFiles =
             let
@@ -39,7 +39,7 @@ in
             path:
             let
               filePath = toString path;
-              requireName = lib.strings.removeSuffix ''.lua'' filePath;
+              requireName = lib.strings.removeSuffix ".lua" filePath;
             in
             "require'${requireName}'"
           );

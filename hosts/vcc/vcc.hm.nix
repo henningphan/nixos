@@ -1,9 +1,8 @@
 { config, pkgs, ... }:
 {
-  # complement missing
-  #home.username = "${cdsid}";
-  # complement missing
-  #home.homeDirectory = "/home/${cdsid}";
+  # use lib.mkForce to overwrite these dummy value
+  home.username = "changeme";
+  home.homeDirectory = "/home/changeme";
 
   home.stateVersion = "23.05"; # Please read the comment before changing.
   #  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [ "slack" "teams" "vimPlugins.copilot-vim" ];
