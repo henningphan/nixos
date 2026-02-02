@@ -2,8 +2,6 @@
   description = "Home Manager configuration of henning";
 
   inputs = {
-    deploy-rs.url = "github:serokell/deploy-rs";
-    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -29,7 +27,6 @@
       nur,
       sops-nix,
       nix-darwin,
-      deploy-rs,
       ...
     }:
     let
@@ -44,8 +41,6 @@
     {
       formatter.x86_64-linux = pkgs_x86_64-linux.nixfmt-rfc-style;
       formatter.aarch64-darwin = pkgs_aarch64-darwin.nixfmt-rfc-style;
-
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
       darwinConfigurations.devies-mbp = darwinSystem {
         system = "aarch64-darwin";
