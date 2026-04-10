@@ -5,13 +5,15 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     element-desktop
-    karabiner-elements
-    jq
-    rectangle
-    yq
     git
     iterm2
+    jq
+    karabiner-elements
+    openssh
+    rectangle
     slack
+    yq
+    yubikey-manager
   ];
   #imports = [ ../../mac/copy-to-spotlight.nix ];
 
