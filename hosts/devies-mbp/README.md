@@ -9,3 +9,6 @@ darwin-rebuild switch
 
 # home-manager
 home-manager switch --flake ~/repo/nixconf
+
+# fix keyboard type
+rm /Library/Preferences/com.apple.keyboardtype.plist
