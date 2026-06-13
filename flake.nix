@@ -102,5 +102,9 @@
         pkgs = pkgs_x86_64-linux;
         modules = [ ./hosts/sofac/henning.hm.nix ];
       };
+      homeConfigurations."henning@rex" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgs_x86_64-linux;
+        modules = [ ./hosts/rex/henning.hm.nix ];
+      };
     };
 }
