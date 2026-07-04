@@ -51,6 +51,13 @@
           ./hosts/devies-mbp/darwin-configuration.nix
         ];
       };
+      nixosConfigurations.tau = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        pkgs = pkgs_x86_64-linux;
+        modules = [
+          ./hosts/tau/configuration.nix
+        ];
+      };
       lib.vcc = import ./hosts/vcc/configuration.nix;
       nixosConfigurations.vcc = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -105,6 +112,10 @@
       homeConfigurations."henning@rex" = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs_x86_64-linux;
         modules = [ ./hosts/rex/henning.hm.nix ];
+      };
+      homeConfigurations."henning@tau" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgs_x86_64-linux;
+        modules = [ ./hosts/tau/henning.hm.nix ];
       };
     };
 }
