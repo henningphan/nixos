@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# Cycles to next sound device. Uses pipewires wpctl and libnotify
+# to notify the user which sound device was activated.
+# The idea is to use a keyboard shortcut to activate the script.
+#
+
+# Replace id is arbitrary number. Multiple runs of script
+# updates the notification instead of waiting until it expires before displaying next.
+REPLACE_ID=77
+mapfile -t sinks < <(wpctl list audio sinks)
+printf "%s\n" "${sinks[@]}"
+echo "${#sinks[@]}"
+for index in "${!sinks[@]}"; do
+  echo running=$index
+  [[ "${sinks[$index]}" =~ "*" ]] && break
+done
+sinks+=("${sinks[0]}")
+((++index))
+
+new_sink_index="${sinks[$index]%%$'\t'*}"
+sink_name=$(wpctl inspect $new_sink_index | sed -n 's|.*alsa.card_name = "\(.*\)"|\1|p')
+notify-send --replace-id=$REPLACE_ID "$sink_name"
+wpctl set-default $new_sink_index

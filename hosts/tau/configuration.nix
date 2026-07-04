@@ -3,7 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+let
+  scripts = (import ../../scripts) { inherit pkgs; };
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -40,6 +42,9 @@
     LC_PAPER = "sv_SE.UTF-8";
     LC_TELEPHONE = "sv_SE.UTF-8";
     LC_TIME = "sv_SE.UTF-8";
+  };
+  programs.steam = {
+    enable = true;
   };
 
   # Enable the X11 windowing system.
@@ -103,10 +108,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
-    protonmail-desktop
+    discord
+    libnotify
     proton-vpn
+    protonmail-desktop
+    scripts.w_next_sink
+    spotify
+    vlc
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
