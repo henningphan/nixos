@@ -15,6 +15,17 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "nfs" ];
+
+  # Steam wiki
+  hardware.graphics = {
+    enable = true;
+    ## radv: an open-source Vulkan driver from freedesktop
+    enable32Bit = true;
+
+    ## amdvlk: an open-source Vulkan driver from AMD
+  };
+  programs.gamemode.enable = true;
 
   networking.hostName = "tau";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -47,25 +58,37 @@ in
     enable = true;
   };
 
+  #  fileSystems."/mnt/nfs" = {
+  #    device = "rex.local:/exports";
+  #    fsType = "nfs3";
+  #
+  #  };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
   # Enable the Cinnamon Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.cinnamon.enable = true;
+  #services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.desktopManager.cinnamon.enable = true;
+
+  #  services.xserver.displayManager.plasma-login-manager.enable = true;
+  services.xserver.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager.sddm.autoNumlock.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "se";
     variant = "dvorak_a5";
   };
+
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
 
   # Configure console keymap
-  console.keyMap = "sv-latin1";
+  console.keyMap = "dvorak-sv-a5";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
