@@ -4,6 +4,7 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs26.url = "github:nixos/nixpkgs/26.05";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +23,7 @@
     inputs@{
       self,
       nixpkgs,
+      nixpkgs26,
       home-manager,
       nixpkgs-firefox-darwin,
       nur,
@@ -33,6 +35,10 @@
       system = "aarch64-darwin";
       pkgs_aarch64-darwin = nixpkgs.legacyPackages.${system};
       pkgs_x86_64-linux = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+      pkgs_x86_64-linux-26 = import nixpkgs26 {
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
