@@ -136,6 +136,7 @@ in
     proton-vpn
     protonmail-desktop
     scripts.w_next_sink
+    signal-desktop
     spotify
     vlc
   ];
