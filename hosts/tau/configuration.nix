@@ -72,7 +72,7 @@ in
   #services.xserver.desktopManager.cinnamon.enable = true;
 
   #  services.xserver.displayManager.plasma-login-manager.enable = true;
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.wayland.enable = true;
   services.displayManager.sddm.autoNumlock.enable = true;
 
