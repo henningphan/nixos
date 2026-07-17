@@ -25,6 +25,7 @@ in
 
     programs.neovim = {
       defaultEditor = true;
+      withPython3 = true;
       enable = true;
       vimAlias = true;
       initLua =
@@ -63,13 +64,14 @@ in
       plugins =
         with pkgs.vimPlugins;
         [
-          fugitive
+          CopilotChat-nvim
+          vim-fugitive
           fzf-vim
           markdown-preview-nvim
           nvim-lspconfig
           nvim-treesitter.withAllGrammars
           plenary-nvim
-          surround
+          vim-surround
           telescope-fzf-native-nvim
           telescope-nvim
           trouble-nvim
