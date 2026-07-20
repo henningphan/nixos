@@ -1,25 +1,28 @@
-#!/usr/bin/env bash
-repo(){
-    # shellcheck disable=SC2164
-    cd "$HOME/repo/$1"
+repo() {
+  local path="$(repo-fzf "$1")"
+  if [[ -z $path ]]; then
+    return
+  elif [[ $path == "/" ]]; then
+    cd ~/repo
+  else
+    cd ~/repo/"$path"
+  fi
+
 }
 
-_repos_completions(){
-    local cur
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    ((${#COMP_WORDS[@]} > 2)) && return
-    _repo "$cur"
+_repo_complete() {
+  local base="$HOME/repo"
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local dir rel
+
+  COMPREPLY=()
+
+  while IFS= read -r dir; do
+    rel="${dir#"$base"/}"
+    COMPREPLY+=("$rel/")
+  done < <(compgen -d -- "$base/$cur")
+
+  compopt -o filenames -o nospace 2>/dev/null
 }
 
-_repo(){
-    local cur
-    pushd ~/repo >/dev/null
-    cur="$1"
-
-    COMPREPLY=($(compgen -d "$cur"))
-
-    popd >/dev/null
-
-    }
-
-complete -o nospace -F _repos_completions repo
+complete -o filenames -F _repo_complete repo

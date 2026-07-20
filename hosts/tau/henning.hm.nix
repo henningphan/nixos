@@ -1,4 +1,7 @@
 { config, pkgs, ... }:
+let
+  scripts = pkgs.callPackage ../../scripts { };
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -17,6 +20,7 @@
     comma
     nix-index
     silver-searcher-ng
+    scripts.repo-fzf
   ];
 
   henning.tmux.enable = true;

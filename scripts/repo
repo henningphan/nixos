@@ -1,0 +1,4 @@
+#
+# fzf repos and subdirs in your ~/repo directory and changes your directory of your choice
+#
+{ fd --type dir --base-directory ~/repo . ; echo / ; } | awk '{ print length($0) " " $0; }' | sort -n | cut -d ' ' -f 2- | fzf -q "$1"
