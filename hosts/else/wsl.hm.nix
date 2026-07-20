@@ -1,0 +1,56 @@
+{ config, pkgs, ... }:
+{
+  # Home Manager needs a bit of information about you and the paths it should
+  # manage.
+  home.username = "nixos";
+  home.homeDirectory = "/home/nixos";
+
+  home.stateVersion = "23.05"; # Please read the comment before changing.
+  imports = [
+    ../../hmmodules/bash
+    ../../hmmodules/macdotatoggle
+    ../../hmmodules/neovim
+    ../../hmmodules/tmux
+    ../../hmmodules/zsh
+  ];
+
+  home.packages = with pkgs; [
+    comma
+    nix-index
+    silver-searcher
+  ];
+  home.shell.enableZshIntegration = true;
+
+  henning.tmux.enable = true;
+  henning.tmux.defaultShell = "${pkgs.zsh}/bin/zsh";
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
+  programs.git = {
+    enable = true;
+    settings.user = {
+      name = "Henning Phan";
+      email = "henning.phan@else.se";
+    };
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
+}

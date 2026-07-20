@@ -5,6 +5,8 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs26.url = "github:nixos/nixpkgs/26.05";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,6 +27,7 @@
       nixpkgs,
       nixpkgs26,
       home-manager,
+      nixos-wsl,
       nixpkgs-firefox-darwin,
       nur,
       sops-nix,
@@ -72,6 +75,15 @@
           ./hosts/vcc/configuration.nix
         ];
       };
+      nixosConfigurations.elsee = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        pkgs = pkgs_x86_64-linux;
+        modules = [
+          ./hosts/else/configuration.nix
+          nixos-wsl.nixosModules.default
+
+        ];
+      };
       homeConfigurations."vcc@vcc" = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs_x86_64-linux;
         modules = [
@@ -105,6 +117,18 @@
             ];
           }
           ./hosts/devies-mbp/phan.hm.nix
+        ];
+      };
+      homeConfigurations."nixos@nixos" = home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgs_x86_64-linux;
+        modules = [
+          {
+            nixpkgs.overlays = [
+              nixpkgs-firefox-darwin.overlay
+              nur.overlays.default
+            ];
+          }
+          ./hosts/else/wsl.hm.nix
         ];
       };
       homeConfigurations."henning@shuttle" = home-manager.lib.homeManagerConfiguration {
