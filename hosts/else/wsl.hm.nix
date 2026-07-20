@@ -17,7 +17,7 @@
   home.packages = with pkgs; [
     comma
     nix-index
-    silver-searcher
+    silver-searcher-ng
   ];
   home.shell.enableZshIntegration = true;
 

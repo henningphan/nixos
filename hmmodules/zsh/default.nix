@@ -9,6 +9,7 @@
     enableZshIntegration = true;
     flags = [
       "--disable-up-arrow"
+      "--disable-ctrl-r"
     ];
     settings = {
       enter_accept = false;
