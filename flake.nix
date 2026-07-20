@@ -75,7 +75,7 @@
           ./hosts/vcc/configuration.nix
         ];
       };
-      nixosConfigurations.elsee = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."else" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         pkgs = pkgs_x86_64-linux;
         modules = [
